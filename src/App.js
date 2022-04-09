@@ -1,23 +1,31 @@
-import logo from './logo.svg';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUser } from "./redux/ducks/user";
 import './App.css';
+import Count from './components/Count';
+import { useEffect } from 'react';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, []);
+
+  const user = useSelector((state) => state.user.user);
+  console.log(user);
+  const count = useSelector(state => state.counter.count)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Redux Saga</h1>
+      {user && (
+        <div className='user-container'>
+          <h2>{user.name}</h2>
+          <p>{user.email}</p>
+        </div>
+      )}
+      <h3>Count: {count} </h3>
+      <Count />
     </div>
   );
 }
